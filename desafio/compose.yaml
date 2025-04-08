@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: "postgres:latest"
+    environment:
+      - "POSTGRES_DB=evologica"
+      - "POSTGRES_PASSWORD=desafio"
+      - "POSTGRES_USER=desafio"
+    ports:
+      - "8090:5432"

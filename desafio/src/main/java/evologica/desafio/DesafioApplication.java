@@ -1,13 +1,13 @@
-package project.EvologicaAPI;
+package evologica.desafio;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EvologicaApiApplication {
+public class DesafioApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EvologicaApiApplication.class, args);
+		SpringApplication.run(DesafioApplication.class, args);
 	}
 
 }
