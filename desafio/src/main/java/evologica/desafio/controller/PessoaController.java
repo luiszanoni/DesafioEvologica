@@ -47,7 +47,7 @@ public class PessoaController {
     @PutMapping("/{id}")
     ResponseEntity<PessoaDTO> editPessoa(@RequestBody PessoaDTO pessoaDTO, @PathVariable Long id) {
         Pessoa response = service.editPessoa(pessoaDTO, id);
-        return ResponseEntity.status(201).body(new PessoaDTO(response));
+        return ResponseEntity.status(200).body(new PessoaDTO(response));
     }
 
     @DeleteMapping("/{id}")

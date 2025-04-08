@@ -39,6 +39,11 @@ public class PessoaService {
 
     public Pessoa editPessoa(PessoaDTO dto, Long id) {
         Pessoa pessoaRegistrada = getPessoaById(id);
+        Pessoa validador = repository.validaCpf(dto.getCpf());
+        if (validador != null && !(pessoaRegistrada.getCpf().equalsIgnoreCase(dto.getCpf()))) {
+            throw new EntityExistsException(
+                    "Nao se deve mudar o cpf para um ja registrado no banco de dados!");
+        }
         pessoaRegistrada.setNome(dto.getNome());
         pessoaRegistrada.setCpf(dto.getCpf());
         pessoaRegistrada.setEmail(dto.getEmail());
