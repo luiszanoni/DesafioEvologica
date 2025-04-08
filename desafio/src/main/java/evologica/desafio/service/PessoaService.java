@@ -1,5 +1,6 @@
 package evologica.desafio.service;
 
+import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -25,6 +26,13 @@ public class PessoaService {
     public Page<Pessoa> getAllPessoas(Pageable page) {
         Page<Pessoa> pessoa = repository.findAll(page);
         return pessoa;
+    }
+
+    public Page<Pessoa> buscarPessoas(String nome, String cpf, LocalDate dataNascimentoInicio,
+            LocalDate dataNascimentoFim,
+            String email,
+            Pageable pageable) {
+        return repository.buscarPessoas(nome, cpf, dataNascimentoInicio, dataNascimentoFim, email, pageable);
     }
 
     public Pessoa createPessoa(PessoaDTO dto) {

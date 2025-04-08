@@ -1,8 +1,11 @@
 package evologica.desafio.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import evologica.desafio.dto.PessoaDTO;
 import evologica.desafio.entity.Pessoa;
@@ -24,16 +28,29 @@ public class PessoaController {
     @Autowired
     PessoaService service;
 
-    private Pageable pageable = Pageable.unpaged();
-
     @GetMapping("/{id}")
     ResponseEntity<PessoaDTO> getPessoa(@PathVariable Long id) {
         Pessoa response = service.getPessoaById(id);
         return ResponseEntity.ok(new PessoaDTO(response));
     }
 
+    @GetMapping("/buscar")
+    public ResponseEntity<Page<Pessoa>> buscarPessoas(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String cpf,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataNascimentoInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataNascimentoFim,
+            @RequestParam(required = false) String email,
+            Pageable pageable) {
+
+        System.out.println("Atributos " + nome + cpf + email);
+        Page<Pessoa> pessoas = service.buscarPessoas(nome, cpf, dataNascimentoInicio, dataNascimentoFim, email,
+                pageable);
+        return ResponseEntity.ok(pessoas);
+    }
+
     @GetMapping()
-    ResponseEntity<Page<Pessoa>> getPagePessoa() {
+    ResponseEntity<Page<Pessoa>> getPagePessoa(Pageable pageable) {
         Page<Pessoa> response = service.getAllPessoas(pageable);
         return ResponseEntity.ok(response);
     }
