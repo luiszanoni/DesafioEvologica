@@ -32,6 +32,7 @@ public class PessoaService {
             LocalDate dataNascimentoFim,
             String email,
             Pageable pageable) {
+
         return repository.buscarPessoas(nome, cpf, dataNascimentoInicio, dataNascimentoFim, email, pageable);
     }
 

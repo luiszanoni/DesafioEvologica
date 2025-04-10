@@ -12,8 +12,8 @@
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt class="min-w-7xl rounded-2xl" [value]="pessoas?.content" [rows]="10" [columns]="cols"
-        [paginator]="true" [globalFilterFields]="['nome', 'cpf', 'email']" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="pessoas?.content" [rows]="10" [columns]="cols" [paginator]="true"
+        [globalFilterFields]="['nome', 'cpf', 'email']" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
         [showCurrentPageReport]="true" selectionMode="single" (onRowSelect)="mostrarCardPessoa($event.data)">
 
@@ -21,14 +21,15 @@
             <div class="flex items-center justify-between ">
                 <h5 class="m-0">Pessoas Registradas</h5>
                 <p-iconfield class="flex items-center justify-between">
-                    <input class="mr-2" type="text" pInputText placeholder="Nome" [(ngModel)]="filtro.nome" />
-                    <p-input-mask class="mr-2" mask="999.999.999-99" placeholder="CPF: 999.999.999-99" type="text"
-                        [(ngModel)]="filtro.cpf" unmask="true" />
-                    <input class="mr-2" type="text" pInputText placeholder="Email" [(ngModel)]="filtro.email" />
-                    <p-date-picker class="mr-2" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
+                    <input class="mr-2 max-w-52" type="text" pInputText placeholder="Nome" [(ngModel)]="filtro.nome" />
+                    <p-input-mask class="mr-2 max-w-52" mask="999.999.999-99" placeholder="CPF: 999.999.999-99"
+                        type="text" [(ngModel)]="filtro.cpf" unmask="true" />
+                    <input class="mr-2 max-w-52" type="text" pInputText placeholder="Email"
+                        [(ngModel)]="filtro.email" />
+                    <p-date-picker class="mr-2 max-w-52" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
                         [(ngModel)]="filtro.dataNascimentoInicio" dateFormat="yy-mm-dd" placeholder="Data inicio"
                         selectionMode="single" />
-                    <p-date-picker class="mr-2" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
+                    <p-date-picker class="mr-2 max-w-52" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
                         [(ngModel)]="filtro.dataNascimentoFim" dateFormat="yy-mm-dd" placeholder="Data Final"
                         selectionMode="single" />
                     <p-button label="Buscar" icon="pi pi-search" (click)="buscarPessoas()" />
@@ -88,9 +89,9 @@
                 <div>
                     <label for="dataNascimento" class="block font-bold mb-3">Data de Nascimento <strong
                             class="text-green-300">*</strong></label>
-                    <p-date-picker id="dataNascimento" dateFormat="yy-mm-dd" [iconDisplay]="'input'" [showIcon]="true"
-                        inputId="icondisplay" [(ngModel)]="pessoa.dataNascimento" placeholder="yyyy-mm-dd"
-                        styleClass="w-full" />
+                    <p-date-picker id="dataNascimento" appendTo="body" dateFormat="yy-mm-dd" [iconDisplay]="'input'"
+                        [showIcon]="true" inputId="icondisplay" [(ngModel)]="pessoa.dataNascimento"
+                        placeholder="yyyy-mm-dd" styleClass="w-full" />
                     <small class="text-red-500" *ngIf="submitted && !pessoa.dataNascimento">
                         Data de Nascimento é obrigatória.
                     </small>
@@ -102,7 +103,7 @@
                 <div>
                     <span for="telefone" class="block font-bold mb-3">Telefone</span>
                     <p-inputmask styleClass="w-full" mask="+99 (99) 99999-9999" placeholder="+99 (99) 99999-9999"
-                        type="text" [(ngModel)]="pessoa.telefone" unmask="true" />
+                        type="text" [(ngModel)]="pessoa.telefone" unmask="true" autoClear="true" />
                 </div>
                 <div>
                     <small>Os campos marcados com <strong class="text-green-300">*</strong> são obrigatórios!</small>

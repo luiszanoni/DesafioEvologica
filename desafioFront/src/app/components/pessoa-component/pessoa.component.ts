@@ -25,191 +25,247 @@ import { Pessoa } from '../../model/pessoa-model';
 import { CardModule } from 'primeng/card';
 import { InputMaskModule } from 'primeng/inputmask';
 import { DatePickerModule } from 'primeng/datepicker';
+import { error } from 'console';
 
 @Component({
-  selector: 'app-pessoa-component',
-  imports: [
-    NgFor,
-    CommonModule,
-    ButtonModule,
-    Toolbar,
-    Toast,
-    TableModule,
-    Dialog,
-    Ripple,
-    SelectModule,
-    ToastModule,
-    ToolbarModule,
-    ConfirmDialog,
-    InputTextModule,
-    TextareaModule,
-    CommonModule,
-    FileUpload,
-    DropdownModule,
-    Tag,
-    RadioButton,
-    Rating,
-    InputTextModule,
-    FormsModule,
-    InputNumber,
-    IconFieldModule,
-    InputIconModule,
-    CardModule,
-    InputMaskModule,
-    DatePickerModule,
-  ],
-  providers: [MessageService, PessoaService, ConfirmationService],
-  templateUrl: './pessoa-component.component.html',
-  styleUrl: './pessoa-component.component.css',
+    selector: 'app-pessoa-component',
+    imports: [
+        NgFor,
+        CommonModule,
+        ButtonModule,
+        Toolbar,
+        Toast,
+        TableModule,
+        Dialog,
+        Ripple,
+        SelectModule,
+        ToastModule,
+        ToolbarModule,
+        ConfirmDialog,
+        InputTextModule,
+        TextareaModule,
+        CommonModule,
+        FileUpload,
+        DropdownModule,
+        Tag,
+        RadioButton,
+        Rating,
+        InputTextModule,
+        FormsModule,
+        InputNumber,
+        IconFieldModule,
+        InputIconModule,
+        CardModule,
+        InputMaskModule,
+        DatePickerModule,
+    ],
+    providers: [MessageService, PessoaService, ConfirmationService],
+    templateUrl: './pessoa-component.component.html',
+    styleUrl: './pessoa-component.component.css',
 })
 export class PessoaComponent implements OnInit {
-  pessoas!: any;
+    pessoas!: any;
 
-  rangeDates = [];
+    rangeDates = [];
 
-  filtro = {
-    nome: '',
-    cpf: '',
-    email: '',
-    dataNascimentoInicio: undefined,
-    dataNascimentoFim: undefined,
-  };
-
-  pessoa: Pessoa = {
-    nome: '',
-    cpf: '',
-    dataNascimento: null,
-  };
-
-  submitted: boolean = false;
-
-  saveForm: boolean = false;
-
-  pessoaCard: boolean = false;
-
-  cols = [
-    { field: 'nome', header: 'Nome' },
-    { field: 'cpf', header: 'CPF' },
-    { field: 'email', header: 'Email' },
-  ];
-
-  constructor(
-    private pessoaService: PessoaService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService
-  ) {}
-
-  ngOnInit(): void {
-    this.pessoaService.getAll().subscribe((data) => {
-      this.pessoas = data;
-    });
-  }
-
-  reloadData(): void {
-    this.pessoaService.getAll().subscribe((data) => {
-      this.pessoas = data;
-    });
-  }
-
-  buscarPessoas(): void {
-    console.log(this.filtro);
-    const { nome, cpf, email, dataNascimentoInicio, dataNascimentoFim } =
-      this.filtro;
-
-    this.pessoaService
-      .buscar(nome, cpf, email, dataNascimentoInicio, dataNascimentoFim)
-      .subscribe({
-        next: (res) => {
-          this.pessoas = res;
-        },
-        error: (err) => {
-          console.error('Erro ao buscar pessoas', err);
-        },
-      });
-  }
-
-  deleteSelectedPessoas(): void {}
-
-  openNew() {
-    this.pessoa = this.pessoa = {
-      id: null,
-      nome: '',
-      cpf: '',
-      dataNascimento: null,
+    filtro = {
+        nome: '',
+        cpf: '',
+        email: '',
+        dataNascimentoInicio: undefined,
+        dataNascimentoFim: undefined,
     };
-    this.submitted = false;
-    this.saveForm = true;
-  }
 
-  editPessoa(p: Pessoa) {
-    console.log('Pessoa recebida para edição:', p);
-    console.log(
-      'Tipo de dataNascimento:',
-      typeof p.dataNascimento,
-      p.dataNascimento
-    );
-
-    this.pessoa = {
-      ...p,
+    pessoa: Pessoa = {
+        nome: '',
+        cpf: '',
+        dataNascimento: null,
     };
-    this.saveForm = true;
-  }
 
-  savePessoa() {
-    this.submitted = true;
-    if (this.formValido()) {
-      if (this.pessoa.id) {
-        this.pessoaService.put(this.pessoa, this.pessoa.id).subscribe(() => {
-          this.reloadData();
-          this.saveForm = false;
+    submitted: boolean = false;
+
+    saveForm: boolean = false;
+
+    pessoaCard: boolean = false;
+
+    cols = [
+        { field: 'nome', header: 'Nome' },
+        { field: 'cpf', header: 'CPF' },
+        { field: 'email', header: 'Email' },
+    ];
+
+    constructor(
+        private pessoaService: PessoaService,
+        private messageService: MessageService,
+        private confirmationService: ConfirmationService
+    ) { }
+
+    ngOnInit(): void {
+        this.pessoaService.getAll().subscribe((data) => {
+            this.pessoas = data;
         });
-      } else {
-        console.log(this.pessoa);
-        this.pessoaService.post(this.pessoa).subscribe(() => {
-          this.reloadData();
-          this.saveForm = false;
-        });
-      }
     }
-  }
 
-  deletePessoa(id: number) {
-    this.confirmationService.confirm({
-      message:
-        'Você tem certeza que deseja excluir esse registro? Essa ação é final e nao pode ser revertida.',
-      header: 'Excluir Registro',
-      icon: 'pi pi-exclamation-triangle',
-      rejectButtonProps: {
-        label: 'Cancelar',
-        severity: 'secondary',
-        outlined: true,
-      },
-      acceptButtonProps: {
-        label: 'Excluir',
-      },
-      accept: () => {
-        this.pessoaService.delete(id).subscribe(() => {
-          this.reloadData();
+    reloadData(): void {
+        this.pessoaService.getAll().subscribe((data) => {
+            this.pessoas = data;
         });
-      },
-    });
-  }
+    }
 
-  mostrarCardPessoa(pessoa: Pessoa) {
-    console.log(pessoa);
-    this.pessoa = pessoa;
-    this.pessoaCard = true;
-  }
+    buscarPessoas(): void {
+        console.log(this.filtro);
+        const { nome, cpf, email, dataNascimentoInicio, dataNascimentoFim } =
+            this.filtro;
 
-  formValido(): boolean {
-    return (
-      !!this.pessoa.nome && !!this.pessoa.cpf && !!this.pessoa.dataNascimento
-    );
-  }
+        this.pessoaService
+            .buscar(nome, cpf, email, dataNascimentoInicio, dataNascimentoFim)
+            .subscribe({
+                next: (res) => {
+                    this.pessoas = res;
+                    this.messageService.add({
+                        severity: 'info',
+                        summary: 'Busca realizada com sucesso!'
+                    })
+                },
+                error: (err) => {
+                    console.error('Erro ao buscar pessoas', err);
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erro!',
+                        detail: err
+                    })
+                },
+            });
+    }
 
-  hideDialog() {
-    this.saveForm = false;
-    this.submitted = false;
-    this.pessoa = { id: null, nome: '', cpf: '', dataNascimento: null };
-  }
+    openNew() {
+        this.pessoa = this.pessoa = {
+            id: null,
+            nome: '',
+            cpf: '',
+            dataNascimento: null,
+        };
+        this.submitted = false;
+        this.saveForm = true;
+    }
+
+    editPessoa(p: Pessoa) {
+        console.log('Pessoa recebida para edição:', p);
+        console.log(
+            'Tipo de dataNascimento:',
+            typeof p.dataNascimento,
+            p.dataNascimento
+        );
+
+        this.pessoa = {
+            ...p,
+        };
+        this.saveForm = true;
+    }
+
+    savePessoa() {
+        this.submitted = true;
+        if (this.formValido()) {
+            if (this.pessoa.id) {
+                if (!this.pessoa.telefone || this.pessoa.telefone.trim() === '') {
+                    this.pessoa.telefone = null;
+                }
+                this.pessoaService.put(this.pessoa, this.pessoa.id).subscribe({
+                    next: (res) => {
+                        this.messageService.add({
+                            severity: "info",
+                            summary: 'Pessoa editada com sucesso',
+                            detail: 'Pessoa: ' + res.nome + ' de CPF: ' + res.cpf
+                        })
+                        this.reloadData();
+                        this.saveForm = false;
+                    },
+                    error: (err) => {
+
+                        this.messageService.add({
+                            severity: "error",
+                            summary: "Erro ao editar Pessoa",
+                            detail: err.error
+                        })
+                    }
+                });
+            } else {
+                console.log(this.pessoa);
+                if (!this.pessoa.telefone || this.pessoa.telefone.trim() === '') {
+                    this.pessoa.telefone = null;
+                }
+                this.pessoaService.post(this.pessoa).subscribe({
+                    next: (res) => {
+                        this.messageService.add({
+                            severity: "info",
+                            summary: 'Pessoa cadastrada com sucesso',
+                            detail: res.nome + 'de CPF: ' + res.cpf
+                        })
+                        this.reloadData();
+                        this.saveForm = false;
+                    },
+                    error: (err) => {
+                        this.messageService.add({
+                            severity: "error",
+                            summary: "Erro ao cadastrar Pessoa",
+                            detail: err.error
+                        })
+                    }
+                });
+            }
+        }
+    }
+
+    deletePessoa(id: number) {
+        this.confirmationService.confirm({
+            message:
+                'Você tem certeza que deseja excluir esse registro? Essa ação é final e nao pode ser revertida.',
+            header: 'Excluir Registro',
+            icon: 'pi pi-exclamation-triangle',
+            rejectButtonProps: {
+                label: 'Cancelar',
+                severity: 'secondary',
+                outlined: true,
+            },
+            acceptButtonProps: {
+                label: 'Excluir',
+            },
+            accept: () => {
+                this.pessoaService.delete(id).subscribe({
+                    next: (res) => {
+                        this.messageService.add({
+                            severity: "info",
+                            summary: 'Pessoa deletada com sucesso',
+                        })
+                        this.reloadData();
+                    },
+                    error: (err) => {
+                        this.messageService.add({
+                            severity: "error",
+                            summary: "Erro ao deletar Pessoa",
+                            detail: err?.error?.message
+                        })
+                    }
+                });
+            },
+        });
+    }
+
+    mostrarCardPessoa(pessoa: Pessoa) {
+        console.log(pessoa);
+        this.pessoa = pessoa;
+        this.pessoaCard = true;
+    }
+
+    formValido(): boolean {
+        return (
+            !!this.pessoa.nome && !!this.pessoa.cpf && !!this.pessoa.dataNascimento
+        );
+    }
+
+    hideDialog() {
+        this.saveForm = false;
+        this.submitted = false;
+        this.pessoa = { id: null, nome: '', cpf: '', dataNascimento: null };
+    }
 }

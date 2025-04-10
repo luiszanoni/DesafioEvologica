@@ -9,9 +9,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
@@ -24,11 +24,11 @@ public class Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
+    @NotNull(message = "O nome e obrigatorio")
     @Column(name = "nome")
     private String nome;
 
-    @NonNull
+    @NotNull(message = "O CPF e obrigatorio")
     @Column(name = "cpf")
     @Pattern(regexp = "\\d{11}", message = "CPF deve conter exatamente 11 dígitos numéricos")
     private String cpf;
@@ -41,7 +41,7 @@ public class Pessoa {
     @Pattern(regexp = "\\d+", message = "O telefone deve contar apenas dígitos numéricos")
     private String telefone;
 
-    @NonNull
+    @NotNull(message = "A data de nascimento e obrigatoria")
     @Column(name = "nascimento")
     private LocalDate dataNascimento;
 }

@@ -48,16 +48,19 @@ export class PessoaService {
     if (email) params = params.set('email', email);
 
     if (dataNascimentoInicio) {
-      dataNascimentoInicio.setUTCHours(3);
+      const dataInicio = formatDate(dataNascimentoInicio.setUTCHours(3),"yyyy-MM-dd",locale)
       params = params.set(
         'dataNascimentoInicio',
-        dataNascimentoInicio.toISOString()
+        dataInicio
       );
     }
 
     if (dataNascimentoFim) {
-      dataNascimentoFim.setUTCHours(3);
-      params = params.set('dataNascimentoFim', dataNascimentoFim.toISOString());
+      const dataFim = formatDate(dataNascimentoFim.setUTCHours(3),"yyyy-MM-dd",locale)
+      params = params.set(
+        'dataNascimentoFim',
+        dataFim
+      );
     }
 
     return this.http.get(`${this.apiUrl}/buscar`, { params });
