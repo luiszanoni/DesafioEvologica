@@ -1,8 +1,8 @@
-export class Pessoa {
-  id?: string;
-  nome?: string;
-  cpf?: string;
+export interface Pessoa {
+  id?: number | null;
+  nome: string;
+  cpf: string;
   email?: string;
   telefone?: string;
-  data?: string;
+  dataNascimento: string | null;
 }

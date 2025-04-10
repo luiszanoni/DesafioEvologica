@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import evologica.desafio.dto.PessoaDTO;
 import evologica.desafio.entity.Pessoa;
 import evologica.desafio.service.PessoaService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/pessoa")
 public class PessoaController {
@@ -43,7 +45,7 @@ public class PessoaController {
             @RequestParam(required = false) String email,
             Pageable pageable) {
 
-        System.out.println("Atributos " + nome + cpf + email);
+        log.info(nome);
         Page<Pessoa> pessoas = service.buscarPessoas(nome, cpf, dataNascimentoInicio, dataNascimentoFim, email,
                 pageable);
         return ResponseEntity.ok(pessoas);

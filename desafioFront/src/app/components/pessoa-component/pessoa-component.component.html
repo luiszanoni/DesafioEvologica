@@ -1,17 +1,131 @@
-<h2>Lista de Pessoas</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>CPF</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let pessoa of pessoas?.content">
-            <td>{{ pessoa.nome }}</td>
-            <td>{{ pessoa.cpf }}</td>
-            <td>{{ pessoa.email }}</td>
-        </tr>
-    </tbody>
-</table>
+<div class="items-start bg-green-300">
+    <img class="h-28 ml-4" src="https://avatars.githubusercontent.com/u/11943857?s=280&v=4" alt="Evologo">
+
+</div>
+
+<div class="card p-6">
+    <p-toast />
+
+    <p-toolbar styleClass="mb-6">
+        <ng-template #start>
+            <p-button label="Novo" icon="pi pi-plus" class="mr-2" (onClick)="saveForm = true" />
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt class="min-w-7xl rounded-2xl" [value]="pessoas?.content" [rows]="10" [columns]="cols"
+        [paginator]="true" [globalFilterFields]="['nome', 'cpf', 'email']" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [showCurrentPageReport]="true" selectionMode="single" (onRowSelect)="mostrarCardPessoa($event.data)">
+
+        <ng-template #caption>
+            <div class="flex items-center justify-between ">
+                <h5 class="m-0">Pessoas Registradas</h5>
+                <p-iconfield class="flex items-center justify-between">
+                    <input class="mr-2" type="text" pInputText placeholder="Nome" [(ngModel)]="filtro.nome" />
+                    <p-input-mask class="mr-2" mask="999.999.999-99" placeholder="CPF: 999.999.999-99" type="text"
+                        [(ngModel)]="filtro.cpf" unmask="true" />
+                    <input class="mr-2" type="text" pInputText placeholder="Email" [(ngModel)]="filtro.email" />
+                    <p-date-picker class="mr-2" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
+                        [(ngModel)]="filtro.dataNascimentoInicio" dateFormat="yy-mm-dd" placeholder="Data inicio"
+                        selectionMode="single" />
+                    <p-date-picker class="mr-2" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
+                        [(ngModel)]="filtro.dataNascimentoFim" dateFormat="yy-mm-dd" placeholder="Data Final"
+                        selectionMode="single" />
+                    <p-button label="Buscar" icon="pi pi-search" (click)="buscarPessoas()" />
+                </p-iconfield>
+            </div>
+        </ng-template>
+
+        <ng-template #header>
+            <tr>
+                <th pSortableColumn="id" style="min-width: 8rem">Id <p-sortIcon field="id" /></th>
+                <th pSortableColumn="nome" style="min-width:8rem">
+                    Nome
+                    <p-sortIcon field="nome" />
+                </th>
+                <th pSortableColumn="cpf" style="min-width: 8rem">
+                    CPF
+                    <p-sortIcon field="cpf" />
+                </th>
+                <th pSortableColumn="dataNascimento" style="min-width:8rem">
+                    Data de Nascimento
+                    <p-sortIcon field="dataNascimento" />
+                </th>
+                <th style="min-width: 12rem"></th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-pessoa>
+            <tr [pSelectableRow]="pessoa">
+                <td style="min-width: 8rem">{{ pessoa.id }}</td>
+                <td style="min-width: 8rem">{{ pessoa.nome }}</td>
+                <td>{{ pessoa.cpf }}</td>
+                <td>{{ pessoa.dataNascimento }}</td>
+                <td>
+                    <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
+                        (click)="editPessoa(pessoa)" />
+                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                        (click)="deletePessoa(pessoa.id)" />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-dialog [(visible)]="saveForm" [style]="{ width: '450px' }" header="Cadastrar nova Pessoa" [modal]="true"
+        (onHide)="hideDialog()">
+        <ng-template #content>
+            <div class="flex flex-col gap-6">
+                <div>
+                    <label for="nome" class="block font-bold mb-3">Nome <strong
+                            class="text-green-300">*</strong></label>
+                    <input type="text" pInputText id="nome" [(ngModel)]="pessoa.nome" required autofocus fluid />
+                    <small class="text-red-500" *ngIf="submitted && !pessoa.nome">Nome é obrigatório.</small>
+                </div>
+                <div>
+                    <span for="cpf" class="block font-bold mb-3">CPF <strong class="text-green-300">*</strong></span>
+                    <p-inputmask styleClass="w-full" mask="999.999.999-99" placeholder="999.999.999-99" type="text"
+                        [(ngModel)]="pessoa.cpf" unmask="true" required autofocus fluid />
+                    <small class="text-red-500" *ngIf="submitted && !pessoa.cpf">O CPF é obrigatório.</small>
+                </div>
+                <div>
+                    <label for="dataNascimento" class="block font-bold mb-3">Data de Nascimento <strong
+                            class="text-green-300">*</strong></label>
+                    <p-date-picker id="dataNascimento" dateFormat="yy-mm-dd" [iconDisplay]="'input'" [showIcon]="true"
+                        inputId="icondisplay" [(ngModel)]="pessoa.dataNascimento" placeholder="yyyy-mm-dd"
+                        styleClass="w-full" />
+                    <small class="text-red-500" *ngIf="submitted && !pessoa.dataNascimento">
+                        Data de Nascimento é obrigatória.
+                    </small>
+                </div>
+                <div>
+                    <label for="email" class="block font-bold mb-3">Email</label>
+                    <input class="w-full" type="text" pInputText id="email" [(ngModel)]="pessoa.email" />
+                </div>
+                <div>
+                    <span for="telefone" class="block font-bold mb-3">Telefone</span>
+                    <p-inputmask styleClass="w-full" mask="+99 (99) 99999-9999" placeholder="+99 (99) 99999-9999"
+                        type="text" [(ngModel)]="pessoa.telefone" unmask="true" />
+                </div>
+                <div>
+                    <small>Os campos marcados com <strong class="text-green-300">*</strong> são obrigatórios!</small>
+                </div>
+
+            </div>
+        </ng-template>
+
+        <ng-template #footer>
+            <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+            <p-button label="Save" icon="pi pi-check" (click)="savePessoa()" />
+        </ng-template>
+    </p-dialog>
+
+    <p-dialog header="Detalhes da Pessoa" [(visible)]="pessoaCard" [modal]="true" [closable]="true"
+        [style]="{ width: '30rem' }" [dismissableMask]="true" (onHide)="hideDialog()">
+        <div class="text-left">
+            <h3 class="font-bold text-xl">Nome: {{ pessoa.nome }}</h3>
+            <p class="mb-2 text-xl font-bold "> Cpf: {{ pessoa.cpf }}</p>
+            <p>Data de Nascimento: {{pessoa.dataNascimento}}</p>
+            <p>Telefone: {{pessoa.telefone}}</p>
+            <p>Email: {{pessoa.email}}</p>
+        </div>
+    </p-dialog>
+    <p-confirmDialog [style]="{ width: '450px' }" />
+</div>

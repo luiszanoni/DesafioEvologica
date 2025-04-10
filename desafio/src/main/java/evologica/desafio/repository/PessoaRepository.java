@@ -16,12 +16,12 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
     @Query("SELECT p FROM Pessoa p where p.cpf = :cpf")
     Pessoa validaCpf(@Param(value = "cpf") String cpf);
 
-    @Query("SELECT p FROM Pessoa p WHERE " +
-            "(:nome IS NULL OR LOWER(p.nome) LIKE LOWER(CONCAT('%', :nome, '%'))) AND " +
+    @Query(nativeQuery = true, value = "SELECT * FROM Pessoa p WHERE " +
+            "(:nome IS NULL OR LOWER(p.nome) LIKE CONCAT('%', LOWER(:nome), '%')) AND " +
             "(:cpf IS NULL OR p.cpf = :cpf) AND " +
-            "(:email IS NULL OR LOWER(p.email) LIKE LOWER(CONCAT('%', :email, '%'))) AND " +
-            "(:dataNascimentoInicio IS NULL OR p.dataNascimento >= :dataNascimentoInicio) AND " +
-            "(:dataNascimentoFim IS NULL OR p.dataNascimento <= :dataNascimentoFim)")
+            "(:email IS NULL OR LOWER(p.email) LIKE CONCAT('%', LOWER(:email), '%')) AND " +
+            "(:dataNascimentoInicio IS NULL OR p.nascimento >= :dataNascimentoInicio) AND " +
+            "(:dataNascimentoFim IS NULL OR p.nascimento <= :dataNascimentoFim)")
     Page<Pessoa> buscarPessoas(@Param("nome") String nome,
             @Param("cpf") String cpf,
             @Param("dataNascimentoInicio") LocalDate dataNascimentoInicio,
