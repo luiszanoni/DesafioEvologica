@@ -1,15 +1,15 @@
-package evologica.desafio.controller;
+package evologica.desafio.handler;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import evologica.desafio.entity.ApiException;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -17,8 +17,9 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 
-@ControllerAdvice
 @Slf4j
+@Hidden
+@RestControllerAdvice
 public class ControllerException extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)

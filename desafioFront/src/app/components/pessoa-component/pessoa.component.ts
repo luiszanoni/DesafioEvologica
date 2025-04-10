@@ -1,4 +1,4 @@
-import { CommonModule, NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -7,37 +7,28 @@ import { Toast, ToastModule } from 'primeng/toast';
 import { Toolbar, ToolbarModule } from 'primeng/toolbar';
 import { PessoaService } from '../../services/pessoa-service.service';
 import { InputIconModule } from 'primeng/inputicon';
-import { InputNumber } from 'primeng/inputnumber';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import { Rating } from 'primeng/rating';
-import { RadioButton } from 'primeng/radiobutton';
-import { Tag } from 'primeng/tag';
 import { DropdownModule } from 'primeng/dropdown';
-import { FileUpload } from 'primeng/fileupload';
 import { TextareaModule } from 'primeng/textarea';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { SelectModule } from 'primeng/select';
-import { Ripple } from 'primeng/ripple';
 import { Dialog } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
 import { Pessoa } from '../../model/pessoa-model';
 import { CardModule } from 'primeng/card';
 import { InputMaskModule } from 'primeng/inputmask';
 import { DatePickerModule } from 'primeng/datepicker';
-import { error } from 'console';
 
 @Component({
     selector: 'app-pessoa-component',
     imports: [
-        NgFor,
         CommonModule,
         ButtonModule,
         Toolbar,
         Toast,
         TableModule,
         Dialog,
-        Ripple,
         SelectModule,
         ToastModule,
         ToolbarModule,
@@ -45,14 +36,9 @@ import { error } from 'console';
         InputTextModule,
         TextareaModule,
         CommonModule,
-        FileUpload,
         DropdownModule,
-        Tag,
-        RadioButton,
-        Rating,
         InputTextModule,
         FormsModule,
-        InputNumber,
         IconFieldModule,
         InputIconModule,
         CardModule,
@@ -243,7 +229,7 @@ export class PessoaComponent implements OnInit {
                         this.messageService.add({
                             severity: "error",
                             summary: "Erro ao deletar Pessoa",
-                            detail: err?.error?.message
+                            detail: err.error
                         })
                     }
                 });
@@ -267,5 +253,19 @@ export class PessoaComponent implements OnInit {
         this.saveForm = false;
         this.submitted = false;
         this.pessoa = { id: null, nome: '', cpf: '', dataNascimento: null };
+    }
+
+    formataCpf(frase: string): string {
+        return frase.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    }
+
+    formatarTelefone(telefone?: string | null): string | null {
+        if (!telefone) {
+            return null;
+        }
+        if (telefone.length === 13) {
+            return telefone.replace(/(\d{2})(\d{2})(\d{5})(\d{4})/, '+$1 ($2) $3-$4');
+        }
+        return telefone
     }
 }

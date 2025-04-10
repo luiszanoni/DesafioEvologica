@@ -59,7 +59,7 @@
             <tr [pSelectableRow]="pessoa">
                 <td style="min-width: 8rem">{{ pessoa.id }}</td>
                 <td style="min-width: 8rem">{{ pessoa.nome }}</td>
-                <td>{{ pessoa.cpf }}</td>
+                <td>{{ formataCpf( pessoa.cpf )}}</td>
                 <td>{{ pessoa.dataNascimento }}</td>
                 <td>
                     <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
@@ -122,9 +122,9 @@
         [style]="{ width: '30rem' }" [dismissableMask]="true" (onHide)="hideDialog()">
         <div class="text-left">
             <h3 class="font-bold text-xl">Nome: {{ pessoa.nome }}</h3>
-            <p class="mb-2 text-xl font-bold "> Cpf: {{ pessoa.cpf }}</p>
+            <p class="mb-2 text-xl font-bold "> Cpf: {{formataCpf( pessoa.cpf )}}</p>
             <p>Data de Nascimento: {{pessoa.dataNascimento}}</p>
-            <p>Telefone: {{pessoa.telefone}}</p>
+            <p>Telefone: {{formatarTelefone( pessoa.telefone)}}</p>
             <p>Email: {{pessoa.email}}</p>
         </div>
     </p-dialog>

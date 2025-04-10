@@ -5,3 +5,16 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  security:
+    enabled: false
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    tags-sorter: alpha 
+logging:
+  level:
+    org.springdoc: DEBUG

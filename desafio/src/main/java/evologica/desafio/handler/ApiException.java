@@ -1,4 +1,4 @@
-package evologica.desafio.entity;
+package evologica.desafio.handler;
 
 import org.springframework.http.HttpStatus;
 
