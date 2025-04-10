@@ -1,9 +1,12 @@
+# Etapa de build
 FROM maven:3.9.9-eclipse-temurin-21-alpine AS build
-COPY src ./src
+WORKDIR /app
 COPY pom.xml .
-RUN --mount=type=cache,target=/root/.m2 mvn clean package
+COPY src ./src
+RUN mvn clean package -DskipTests
 
+# Etapa de execução
 FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
-COPY --from=build target/desafio-*.jar .
-ENTRYPOINT ["/bin/sh", "-c", "java -jar desafio-*.jar"]
+COPY --from=build /app/target/desafio-*.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
