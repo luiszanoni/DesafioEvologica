@@ -109,8 +109,10 @@ export class PessoaComponent implements OnInit {
                 next: (res) => {
                     this.pessoas = res;
                     this.messageService.add({
-                        severity: 'info',
-                        summary: 'Busca realizada com sucesso!'
+                        severity: 'secondary',
+                        summary: 'Busca realizada com sucesso!',
+                        icon: 'pi pi-check',
+                        life: 1500
                     })
                 },
                 error: (err) => {
@@ -118,7 +120,7 @@ export class PessoaComponent implements OnInit {
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Erro!',
-                        detail: err
+                        detail: err.error
                     })
                 },
             });
@@ -159,9 +161,11 @@ export class PessoaComponent implements OnInit {
                 this.pessoaService.put(this.pessoa, this.pessoa.id).subscribe({
                     next: (res) => {
                         this.messageService.add({
-                            severity: "info",
+                            severity: "secondary",
                             summary: 'Pessoa editada com sucesso',
-                            detail: 'Pessoa: ' + res.nome + ' de CPF: ' + res.cpf
+                            detail: 'Pessoa: ' + res.nome + ' de CPF: ' + res.cpf,
+                            icon: 'pi pi-check',
+                            life: 1500
                         })
                         this.reloadData();
                         this.saveForm = false;
@@ -183,9 +187,11 @@ export class PessoaComponent implements OnInit {
                 this.pessoaService.post(this.pessoa).subscribe({
                     next: (res) => {
                         this.messageService.add({
-                            severity: "info",
+                            severity: "secondary",
                             summary: 'Pessoa cadastrada com sucesso',
-                            detail: res.nome + 'de CPF: ' + res.cpf
+                            detail: res.nome + 'de CPF: ' + res.cpf,
+                            icon: 'pi pi-check',
+                            life: 1500
                         })
                         this.reloadData();
                         this.saveForm = false;
@@ -220,8 +226,10 @@ export class PessoaComponent implements OnInit {
                 this.pessoaService.delete(id).subscribe({
                     next: (res) => {
                         this.messageService.add({
-                            severity: "info",
+                            severity: "secondary",
                             summary: 'Pessoa deletada com sucesso',
+                            icon: 'pi pi-check',
+                            life: 1500
                         })
                         this.reloadData();
                     },
