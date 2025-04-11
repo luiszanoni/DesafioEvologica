@@ -5,7 +5,8 @@ import { provideRouter } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 
-registerLocaleData(localePt);
--bootstrapApplication(AppComponent, appConfig).catch((err) =>
+registerLocaleData(localePt, "pt-BR");
+
+bootstrapApplication(AppComponent, appConfig).catch((err) =>
   console.error(err)
 );

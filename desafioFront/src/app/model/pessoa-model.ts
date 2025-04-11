@@ -4,5 +4,5 @@ export interface Pessoa {
   cpf: string;
   email?: string;
   telefone?: string | null;
-  dataNascimento: string | null;
+  dataNascimento: string | Date | null;
 }

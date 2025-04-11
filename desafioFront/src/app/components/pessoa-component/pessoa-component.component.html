@@ -60,7 +60,7 @@
                 <td style="min-width: 8rem">{{ pessoa.id }}</td>
                 <td style="min-width: 8rem">{{ pessoa.nome }}</td>
                 <td>{{ formataCpf( pessoa.cpf )}}</td>
-                <td>{{ pessoa.dataNascimento }}</td>
+                <td>{{ formataDate(pessoa.dataNascimento) }}</td>
                 <td>
                     <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
                         (click)="editPessoa(pessoa)" />
@@ -88,7 +88,7 @@
                 <div>
                     <label for="dataNascimento" class="block font-bold mb-3">Data de Nascimento <strong
                             class="text-teal-400">*</strong></label>
-                    <p-date-picker id="dataNascimento" appendTo="body" dateFormat="yy-mm-dd" [iconDisplay]="'input'"
+                    <p-date-picker id="dataNascimento" appendTo="body" dateFormat="dd-mm-yy" [iconDisplay]="'input'"
                         [showIcon]="true" inputId="icondisplay" [(ngModel)]="pessoa.dataNascimento"
                         placeholder="dd-mm-yyyy" styleClass="w-full" />
                     <small class="text-red-500" *ngIf="submitted && !pessoa.dataNascimento">
@@ -122,7 +122,8 @@
         <div class="text-left">
             <h3 class="font-bold text-xl">Nome: {{ pessoa.nome }}</h3>
             <p class="mb-2 text-xl font-bold "> Cpf: {{formataCpf( pessoa.cpf )}}</p>
-            <p>Data de Nascimento: {{pessoa.dataNascimento}}</p>
+            <p>Data de Nascimento: {{ pessoa.dataNascimento | customDateFormat:'dd-MM-yyyy':'pt-BR' }}
+            </p>
             <p>Telefone: {{formatarTelefone( pessoa.telefone)}}</p>
             <p>Email: {{pessoa.email}}</p>
         </div>

@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID, provideZoneChangeDetection } from '@angular/core';
 import { definePreset, updatePrimaryPalette } from '@primeng/themes';
 import { provideRouter } from '@angular/router';
 import Aura from '@primeng/themes/aura';
@@ -7,7 +7,10 @@ import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http'; import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -37,5 +40,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideHttpClient(),
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
   ],
 };

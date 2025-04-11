@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -19,6 +19,7 @@ import { Pessoa } from '../../model/pessoa-model';
 import { CardModule } from 'primeng/card';
 import { InputMaskModule } from 'primeng/inputmask';
 import { DatePickerModule } from 'primeng/datepicker';
+import { DateFormatPipe } from '../../util/DateFormatPipe';
 
 @Component({
     selector: 'app-pessoa-component',
@@ -44,6 +45,7 @@ import { DatePickerModule } from 'primeng/datepicker';
         CardModule,
         InputMaskModule,
         DatePickerModule,
+        DateFormatPipe
     ],
     providers: [MessageService, PessoaService, ConfirmationService],
     templateUrl: './pessoa-component.component.html',
@@ -65,7 +67,7 @@ export class PessoaComponent implements OnInit {
     pessoa: Pessoa = {
         nome: '',
         cpf: '',
-        dataNascimento: null,
+        dataNascimento: '',
     };
 
     submitted: boolean = false;
@@ -131,7 +133,7 @@ export class PessoaComponent implements OnInit {
             id: null,
             nome: '',
             cpf: '',
-            dataNascimento: null,
+            dataNascimento: '',
         };
         this.submitted = false;
         this.saveForm = true;
@@ -144,9 +146,14 @@ export class PessoaComponent implements OnInit {
             typeof p.dataNascimento,
             p.dataNascimento
         );
+        const dataConvertida = p.dataNascimento
+            ? this.stringParaDataLocal(p.dataNascimento)
+            : null;
+
 
         this.pessoa = {
             ...p,
+            dataNascimento: dataConvertida
         };
         this.saveForm = true;
     }
@@ -260,7 +267,7 @@ export class PessoaComponent implements OnInit {
     hideDialog() {
         this.saveForm = false;
         this.submitted = false;
-        this.pessoa = { id: null, nome: '', cpf: '', dataNascimento: null };
+        this.pessoa = { id: null, nome: '', cpf: '', dataNascimento: '' };
     }
 
     formataCpf(frase: string): string {
@@ -275,5 +282,20 @@ export class PessoaComponent implements OnInit {
             return telefone.replace(/(\d{2})(\d{2})(\d{5})(\d{4})/, '+$1 ($2) $3-$4');
         }
         return telefone
+    }
+
+    formataDate(data: string): string {
+        return formatDate(data, 'dd-MM-yyyy', 'pt-BR')
+    }
+
+    stringParaDataLocal(dateValue: string | Date | null): Date | null {
+        if (!dateValue) return null;
+
+        if (typeof dateValue === 'string') {
+            const [ano, mes, dia] = dateValue.split('-').map(Number);
+            return new Date(ano, mes - 1, dia);
+        }
+
+        return dateValue;
     }
 }
