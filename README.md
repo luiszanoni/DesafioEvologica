@@ -12,15 +12,17 @@ Este projeto Full-Stack contém uma API REST desenvolvida com Java 21 e Spring B
 - Lombok
 - Maven
 - Docker e Docker Compose
+- WSL2
 
 ## Pré-requisitos para rodar a API
 
 Antes de iniciar a API, é necessário ter instalado:
 
 - [Docker Desktop](https://docs.docker.com/get-docker/)
-- [Java 21](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html)
+- [Java 21](https://adoptium.net/temurin/releases/)
 - [Maven](https://maven.apache.org/install.html)
 - [Git](https://git-scm.com/)
+- [WSL](https://learn.microsoft.com/pt-br/windows/wsl/install)
 
 ## Tecnologias utilizadas na Interface Web
 
@@ -28,6 +30,7 @@ Antes de iniciar a API, é necessário ter instalado:
 - Tailwind.css v4.0
 - Typescript
 - Node.js
+- PrimeNG
 
 ## Pré-requisitos para rodar a Interface Web
 
@@ -40,7 +43,7 @@ Antes de iniciar a interface, é necessário ter instalado:
 1. Clone o repositorio no GitHub, use o comando abaixo no terminal de sua preferência (CMD, PowerShell ou Git Bash):.
 
 ```Bash
-    https://github.com/luiszanoni/DesafioEvologica.git
+    git clone https://github.com/luiszanoni/DesafioEvologica.git
 ```
 
 2. Acesse a pasta do projeto
