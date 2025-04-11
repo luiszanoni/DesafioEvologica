@@ -54,6 +54,8 @@ import { DateFormatPipe } from '../../util/DateFormatPipe';
 export class PessoaComponent implements OnInit {
     pessoas!: any;
 
+    maxDate: Date | undefined;
+
     rangeDates = [];
 
     filtro = {
@@ -89,6 +91,7 @@ export class PessoaComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        this.maxDate = new Date()
         this.pessoaService.getAll().subscribe((data) => {
             this.pessoas = data;
         });
@@ -101,7 +104,6 @@ export class PessoaComponent implements OnInit {
     }
 
     buscarPessoas(): void {
-        console.log(this.filtro);
         const { nome, cpf, email, dataNascimentoInicio, dataNascimentoFim } =
             this.filtro;
 
@@ -110,19 +112,29 @@ export class PessoaComponent implements OnInit {
             .subscribe({
                 next: (res) => {
                     this.pessoas = res;
-                    this.messageService.add({
-                        severity: 'secondary',
-                        summary: 'Busca realizada com sucesso!',
-                        icon: 'pi pi-check',
-                        life: 1500
-                    })
+                    if (Object.keys(this.pessoas?.content).length == 0) {
+                        this.messageService.add({
+                            severity: 'contrast',
+                            summary: 'Busca realizada com sucesso.',
+                            detail: 'Não foram encontrados registros para o filtro definido.',
+                            icon: 'pi pi-info',
+                            life: 3000
+                        })
+                    } else {
+                        this.messageService.add({
+                            severity: 'secondary',
+                            summary: 'Busca realizada com sucesso.',
+                            icon: 'pi pi-check',
+                            life: 1500
+                        })
+                    }
                 },
                 error: (err) => {
-                    console.error('Erro ao buscar pessoas', err);
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Erro!',
-                        detail: err.error
+                        detail: err.error,
+                        life: 3000
                     })
                 },
             });
@@ -140,12 +152,6 @@ export class PessoaComponent implements OnInit {
     }
 
     editPessoa(p: Pessoa) {
-        console.log('Pessoa recebida para edição:', p);
-        console.log(
-            'Tipo de dataNascimento:',
-            typeof p.dataNascimento,
-            p.dataNascimento
-        );
         const dataConvertida = p.dataNascimento
             ? this.stringParaDataLocal(p.dataNascimento)
             : null;
@@ -169,7 +175,7 @@ export class PessoaComponent implements OnInit {
                     next: (res) => {
                         this.messageService.add({
                             severity: "secondary",
-                            summary: 'Pessoa editada com sucesso',
+                            summary: 'Pessoa editada com sucesso.',
                             detail: 'Pessoa: ' + res.nome + ' de CPF: ' + res.cpf,
                             icon: 'pi pi-check',
                             life: 1500
@@ -181,13 +187,13 @@ export class PessoaComponent implements OnInit {
 
                         this.messageService.add({
                             severity: "error",
-                            summary: "Erro ao editar Pessoa",
-                            detail: err.error
+                            summary: "Erro ao editar Pessoa.",
+                            detail: err.error,
+                            life: 3000
                         })
                     }
                 });
             } else {
-                console.log(this.pessoa);
                 if (!this.pessoa.telefone || this.pessoa.telefone.trim() === '') {
                     this.pessoa.telefone = null;
                 }
@@ -195,7 +201,7 @@ export class PessoaComponent implements OnInit {
                     next: (res) => {
                         this.messageService.add({
                             severity: "secondary",
-                            summary: 'Pessoa cadastrada com sucesso',
+                            summary: 'Pessoa cadastrada com sucesso.',
                             detail: res.nome + 'de CPF: ' + res.cpf,
                             icon: 'pi pi-check',
                             life: 1500
@@ -206,8 +212,9 @@ export class PessoaComponent implements OnInit {
                     error: (err) => {
                         this.messageService.add({
                             severity: "error",
-                            summary: "Erro ao cadastrar Pessoa",
-                            detail: err.error
+                            summary: "Erro ao cadastrar Pessoa.",
+                            detail: err.error,
+                            life: 3000
                         })
                     }
                 });
@@ -218,7 +225,7 @@ export class PessoaComponent implements OnInit {
     deletePessoa(id: number) {
         this.confirmationService.confirm({
             message:
-                'Você tem certeza que deseja excluir esse registro? Essa ação é final e nao pode ser revertida.',
+                'Você tem certeza que deseja excluir esse registro? Essa ação não poderá ser revertida.',
             header: 'Excluir Registro',
             icon: 'pi pi-exclamation-triangle',
             rejectButtonProps: {
@@ -234,7 +241,7 @@ export class PessoaComponent implements OnInit {
                     next: (res) => {
                         this.messageService.add({
                             severity: "secondary",
-                            summary: 'Pessoa deletada com sucesso',
+                            summary: 'Pessoa deletada com sucesso.',
                             icon: 'pi pi-check',
                             life: 1500
                         })
@@ -243,8 +250,9 @@ export class PessoaComponent implements OnInit {
                     error: (err) => {
                         this.messageService.add({
                             severity: "error",
-                            summary: "Erro ao deletar Pessoa",
-                            detail: err.error
+                            summary: "Erro ao deletar Pessoa.",
+                            detail: err.error,
+                            life: 3000
                         })
                     }
                 });
@@ -253,7 +261,6 @@ export class PessoaComponent implements OnInit {
     }
 
     mostrarCardPessoa(pessoa: Pessoa) {
-        console.log(pessoa);
         this.pessoa = pessoa;
         this.pessoaCard = true;
     }

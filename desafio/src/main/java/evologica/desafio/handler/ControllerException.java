@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -29,7 +31,8 @@ public class ControllerException extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(apiException.getStatus()).body(apiException.getError());
     }
 
-    @ExceptionHandler({ ValidationException.class, EntityExistsException.class, NullPointerException.class
+    @ExceptionHandler({ ValidationException.class, EntityExistsException.class, NullPointerException.class,
+            NumberFormatException.class
     })
     public ResponseEntity<Object> handleSaveException(Exception e) {
         log.error("Erro ao realizar requisicao: ", e);
@@ -52,5 +55,23 @@ public class ControllerException extends ResponseEntityExceptionHandler {
         return ResponseEntity
                 .status(apiException.getStatus())
                 .body(apiException.getError());
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException ex,
+            org.springframework.http.HttpHeaders headers,
+            HttpStatusCode status,
+            org.springframework.web.context.request.WebRequest request) {
+
+        if (ex.getCause() instanceof com.fasterxml.jackson.databind.exc.InvalidFormatException) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Formato inválido para campo data. Use o formato yyyy-MM-dd.");
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Requisição malformada: " + ex.getMessage());
     }
 }
