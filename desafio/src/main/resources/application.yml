@@ -3,8 +3,13 @@ spring:
     name: desafio
   jpa:
     show-sql: true
+    database: postgresql
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:postgresql://postgres-vjol.railway.internal:5432/railway
+    username: postgres
+    password: xvVpb0RBlRlWyZhiSUMBlKwberYlNqBQ
   security:
     enabled: false
 springdoc:
@@ -18,3 +23,6 @@ springdoc:
 logging:
   level:
     org.springdoc: DEBUG
+docker:
+  compose:
+    enabled: false

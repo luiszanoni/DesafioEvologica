@@ -48,7 +48,7 @@ export class PessoaService {
     if (email) params = params.set('email', email);
 
     if (dataNascimentoInicio) {
-      const dataInicio = formatDate(dataNascimentoInicio.setUTCHours(3),"yyyy-MM-dd",locale)
+      const dataInicio = formatDate(dataNascimentoInicio.setUTCHours(3), "yyyy-MM-dd", locale)
       params = params.set(
         'dataNascimentoInicio',
         dataInicio
@@ -56,7 +56,7 @@ export class PessoaService {
     }
 
     if (dataNascimentoFim) {
-      const dataFim = formatDate(dataNascimentoFim.setUTCHours(3),"yyyy-MM-dd",locale)
+      const dataFim = formatDate(dataNascimentoFim.setUTCHours(3), "yyyy-MM-dd", locale)
       params = params.set(
         'dataNascimentoFim',
         dataFim

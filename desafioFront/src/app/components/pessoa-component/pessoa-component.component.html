@@ -27,10 +27,10 @@
                     <input class="mr-2 max-w-52" type="text" pInputText placeholder="Email"
                         [(ngModel)]="filtro.email" />
                     <p-date-picker class="mr-2 max-w-52" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
-                        [(ngModel)]="filtro.dataNascimentoInicio" dateFormat="yy-mm-dd" placeholder="Data inicio"
+                        [(ngModel)]="filtro.dataNascimentoInicio" dateFormat="dd-mm-yy" placeholder="Data inicio"
                         selectionMode="single" />
                     <p-date-picker class="mr-2 max-w-52" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
-                        [(ngModel)]="filtro.dataNascimentoFim" dateFormat="yy-mm-dd" placeholder="Data Final"
+                        [(ngModel)]="filtro.dataNascimentoFim" dateFormat="dd-mm-yy" placeholder="Data Final"
                         selectionMode="single" />
                     <p-button label="Buscar" icon="pi pi-search" (click)="buscarPessoas()" />
                 </p-iconfield>
@@ -90,7 +90,7 @@
                             class="text-teal-400">*</strong></label>
                     <p-date-picker id="dataNascimento" appendTo="body" dateFormat="yy-mm-dd" [iconDisplay]="'input'"
                         [showIcon]="true" inputId="icondisplay" [(ngModel)]="pessoa.dataNascimento"
-                        placeholder="yyyy-mm-dd" styleClass="w-full" />
+                        placeholder="dd-mm-yyyy" styleClass="w-full" />
                     <small class="text-red-500" *ngIf="submitted && !pessoa.dataNascimento">
                         Data de Nascimento é obrigatória.
                     </small>
