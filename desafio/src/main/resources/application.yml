@@ -7,9 +7,9 @@ spring:
     hibernate:
       ddl-auto: create-drop
   datasource:
-    url: jdbc:postgresql://postgres-vjol.railway.internal:5432/railway
+    url: jdbc:postgresql://switchyard.proxy.rlwy.net:45023/railway
     username: postgres
-    password: xvVpb0RBlRlWyZhiSUMBlKwberYlNqBQ
+    password: guLdBpHoMykXtrgBqfoPBSTFIzFaJKWV
   security:
     enabled: false
 springdoc:
